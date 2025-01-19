@@ -22,9 +22,9 @@ data:
   OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: "true"
   OAUTH2_PROXY_UPSTREAMS: http://backend-api:8080
   OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL: "true"
-  OAUTH2_PROXY_FORCE_JSON_ERRORS: "true" # Authenticate 失敗時不做導頁，而是固定回傳 empty json object
+  OAUTH2_PROXY_FORCE_JSON_ERRORS: "true" # When Authenticate fails, no guide page will be created, but an empty json object will be returned instead.
   OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
-  OAUTH2_PROXY_SKIP_AUTH_PREFLIGHT: "true" # 讓 Oauth2 Proxy 接收到 OPTIONS request 時不做 Authentication 行為（可以解決 Broswer 做 preflight request 時，Oauth2 Proxt 回覆 401 導致 CORS 的問題）
-  OAUTH2_PROXY_REAL_CLIENT_IP_HEADER: "X-Forwarded-For" # 指定 Oauth2 Proxy 透過 X-Forwarded-For header 辨認 Client IP
-  # OAUTH2_PROXY_TRUSTED_IPS: "127.0.0.1" # 要讓 Oauth2 Proxy 信任的 IP List，此選項會讓這個 IP List 繞過 Oauth2 Proxy 的 Authentication 行為
+  OAUTH2_PROXY_SKIP_AUTH_PREFLIGHT: "true" # No Authentication behavior is performed when receiving an OPTIONS request (this can solve the problem of CORS caused by Oauth2 Proxt replying 401 when Broswer makes a preflight request)
+  OAUTH2_PROXY_REAL_CLIENT_IP_HEADER: "X-Forwarded-For" # Specify Oauth2 Proxy to identify Client IP through X-Forwarded-For header
+  # OAUTH2_PROXY_TRUSTED_IPS: "127.0.0.1" # IP List trusted by Oauth2 Proxy. This option will allow this IP List to bypass the Authentication behavior of Oauth2 Proxy.
   OAUTH2_PROXY_SHOW_DEBUG_ON_ERROR: "true" # show detailed error information on error pages (WARNING: this may contain sensitive information - do not use in production)
