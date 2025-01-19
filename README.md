@@ -1,0 +1,1 @@
+# SSO-solution-k8s-configuration
