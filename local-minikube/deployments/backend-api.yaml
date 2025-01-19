@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: application
+  name: backend-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-api
+  template:
+    metadata:
+      labels:
+        app: backend-api
+    spec:
+      containers:
+        - name: backend-api
+          image: my-backend-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+            - name: health-port
+              containerPort: 9000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          startupProbe:
+            httpGet:
+              path: /q/health/started
+              port: health-port
+              scheme: HTTP
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: health-port
+              scheme: HTTP
+            failureThreshold: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: health-port
+              scheme: HTTP
+            failureThreshold: 2
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: backend-api
+            - secretRef:
+                name: backend-api

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: application
+  name: oauth2-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        app: oauth2-proxy
+    spec:
+      containers:
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.8.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4180
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          startupProbe:
+            httpGet:
+              path: /oauth2/ready
+              port: 4180
+              scheme: HTTP
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /oauth2/ready
+              port: 4180
+              scheme: HTTP
+            failureThreshold: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /oauth2/ready
+              port: 4180
+              scheme: HTTP
+            failureThreshold: 2
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: oauth2-proxy
+            - secretRef:
+                name: oauth2-proxy

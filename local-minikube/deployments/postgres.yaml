@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: sso
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15.8
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          envFrom:
+            - configMapRef:
+                name: postgres
+            - secretRef:
+                name: postgres
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: application
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15.8
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          envFrom:
+            - configMapRef:
+                name: postgres
+            - secretRef:
+                name: postgres

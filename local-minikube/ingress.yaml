@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: sso
+  name: keycloak
+spec:
+  defaultBackend:
+    service:
+      name: keycloak
+      port:
+        number: 8080
+  rules:
+    - host: sso.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 9000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: application
+  name: backend-api
+spec:
+  defaultBackend:
+    service:
+      name: oauth2-proxy
+      port:
+        number: 4180
+  rules:
+    - host: backend-api.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy
+                port:
+                  number: 4180
+          - path: /q/health
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-api
+                port:
+                  number: 9000
