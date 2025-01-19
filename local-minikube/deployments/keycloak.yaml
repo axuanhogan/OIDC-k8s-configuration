@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: sso
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: my-keycloak:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+            - name: health-port
+              containerPort: 9000
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          startupProbe:
+            httpGet:
+              path: /health/started
+              port: health-port
+              scheme: HTTP
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: health-port
+              scheme: HTTP
+            failureThreshold: 2
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: health-port
+              scheme: HTTP
+            failureThreshold: 2
+            periodSeconds: 10
+          args:
+            - start-dev
+            - --features=declarative-ui
+            - --spi-user-provider=jpa-encrypted # https://github.com/MLukman/Keycloak-PII-Data-Encryption-Provider
+          envFrom:
+            - configMapRef:
+                name: keycloak
+            - secretRef:
+                name: keycloak
