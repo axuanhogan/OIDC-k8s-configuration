@@ -39,8 +39,8 @@
 2. Load local images to minikube
 
     ```shell
-    minikube load image my-keycloak:latest
-    minikube load image my-backend-api:latest
+    minikube image load my-keycloak:latest
+    minikube image load my-backend-api:latest
     ```
 
 3. Enable minikube tunnel
