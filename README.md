@@ -35,6 +35,13 @@
     ```
 
     `--driver=docker`：Specify driver as docker to use local images.
+   
+    If there are insufficient resources, you need to configure sufficient resources for your minikube cluster at startup.<br>
+    Take the following configuration as an example：`3G` Memory + `CPU` x 2
+
+    ```shell
+    minikube start --memory 3096 --cpus 2
+    ```
 
 2. Enable minikube ingress
 
