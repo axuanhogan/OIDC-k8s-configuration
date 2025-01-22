@@ -35,8 +35,15 @@
     ```
 
     `--driver=docker`：Specify driver as docker to use local images.
+   
+    If there are insufficient resources, you need to configure sufficient resources for your minikube cluster at startup.<br>
+    Take the following configuration as an example：`3G` Memory + `CPU` x 2
 
-2. Enable minikube ingress
+    ```shell
+    minikube start --memory 3096 --cpus 2
+    ```
+
+3. Enable minikube ingress
 
     If your minikube cluster is created for the first time,<br>You need to enable ingress before setting up the service.
 
@@ -49,14 +56,14 @@
     minikube addons list | grep ingress
     ```
 
-3. Load local images to minikube
+4. Load local images to minikube
 
     ```shell
     minikube image load my-keycloak:latest
     minikube image load my-backend-api:latest
     ```
 
-4. Apply `namespace` `secrets` `configmaps` `ingress` yaml files to minikube cluster
+5. Apply `namespace` `secrets` `configmaps` `ingress` yaml files to minikube cluster
 
     ```shell
     kubectl apply -f local-minikube/namespace.yaml
@@ -65,7 +72,7 @@
     kubectl apply -f local-minikube/ingress.yaml
     ```
 
-5. Configure the ingress address to your Local hosts（ `/private/etc/hosts` ）
+6. Configure the ingress address to your Local hosts（ `/private/etc/hosts` ）
 
     ```shell
     xxx.xxx.xxx.xxx sso.localhost backend-api.localhost
@@ -78,12 +85,12 @@
     kubectl get ingress -n application
     ```
 
-6. Apply deployment `postgres` to minikube cluster
+7. Apply deployment `postgres` to minikube cluster
 
     ```shell
     kubectl apply -f local-minikube/deployments/postgres.yaml
 
-7. Apply deployment `keycloak` to minikube cluster
+8. Apply deployment `keycloak` to minikube cluster
 
     ```shell
     kubectl apply -f local-minikube/deployments/keycloak.yaml
@@ -91,7 +98,7 @@
 
     Keycloak console account and password are both admin (configured in k8s `configmap` yaml).
 
-8. Configure the Keycloak Realm
+9. Configure the Keycloak Realm
 
     Please refer to Keycloak official documentation.
     - [Keycloak Guides](https://www.keycloak.org/guides)
@@ -99,7 +106,7 @@
     Or directly import the configured json file into Realm.
     - `/keycloak/realm-demo.json`
 
-9. Configure Oauth2 Proxy’s `client secret` & `cookie secret` in secret
+10. Configure Oauth2 Proxy’s `client secret` & `cookie secret` in secret
 
     ```shell
     OAUTH2_PROXY_CLIENT_SECRET: {client-secret}
