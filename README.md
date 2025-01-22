@@ -56,19 +56,7 @@
     minikube image load my-backend-api:latest
     ```
 
-4. Enable minikube tunnel
-
-    ```shell
-    minikube tunnel
-    ```
-
-    Why enable `minikube tunnel`?
-
-    The ingress will obtain an external IP, but because this minikube cluster operates within the container through Docker<br>Therefore, a channel needs to be established through minikube tunnel to connect the cluster IP of the minikube environment to localhost.
-
-    When starting minikube, there is actually a thoughtful reminder to enable the channel：<br>`After the addon is enabled, please run "minikube tunnel" and your ingress resources would be available at "127.0.0.1"`
-
-5. Apply `namespace` `secrets` `configmaps` `ingress` yaml files to minikube cluster
+4. Apply `namespace` `secrets` `configmaps` `ingress` yaml files to minikube cluster
 
     ```shell
     kubectl apply -f local-minikube/namespace.yaml
@@ -77,7 +65,7 @@
     kubectl apply -f local-minikube/ingress.yaml
     ```
 
-6. Configure the ingress address to your Local hosts（ `/private/etc/hosts` ）
+5. Configure the ingress address to your Local hosts（ `/private/etc/hosts` ）
 
     ```shell
     xxx.xxx.xxx.xxx sso.localhost backend-api.localhost
@@ -90,18 +78,20 @@
     kubectl get ingress -n application
     ```
 
-7. Apply deployment `postgres` to minikube cluster
+6. Apply deployment `postgres` to minikube cluster
 
     ```shell
     kubectl apply -f local-minikube/deployments/postgres.yaml
 
-8. Apply deployment `keycloak` to minikube cluster
+7. Apply deployment `keycloak` to minikube cluster
 
     ```shell
     kubectl apply -f local-minikube/deployments/keycloak.yaml
     ```
 
-9. Configure the Keycloak Realm
+    Keycloak console account and password are both admin (configured in k8s `configmap` yaml).
+
+8. Configure the Keycloak Realm
 
     Please refer to Keycloak official documentation.
     - [Keycloak Guides](https://www.keycloak.org/guides)
@@ -109,7 +99,7 @@
     Or directly import the configured json file into Realm.
     - `/keycloak/realm-demo.json`
 
-10. Configure Oauth2 Proxy’s `client secret` & `cookie secret` in secret
+9. Configure Oauth2 Proxy’s `client secret` & `cookie secret` in secret
 
     ```shell
     OAUTH2_PROXY_CLIENT_SECRET: {client-secret}
@@ -125,9 +115,21 @@
         openssl rand -base64 32 | tr -- '+/' '-_'
         ```
 
-11. Apply deployments `oauth2-proxy` `backend-api` to minikube cluster
+10. Apply deployments `oauth2-proxy` `backend-api` to minikube cluster
 
     ```shell
     kubectl apply -f local-minikube/deployments/oauth2-proxy.yaml
     kubectl apply -f local-minikube/deployments/backend-api.yaml
     ```
+
+11. Enable minikube tunnel
+
+    ```shell
+    minikube tunnel
+    ```
+
+    Why enable `minikube tunnel`?
+
+    The ingress will obtain an external IP, but because this minikube cluster operates within the container through Docker.<br>If you cannot directly connect to the Internet using MacOS, you need to establish a channel through minikube tunnel and connect the cluster IP of the minikube environment to localhost.
+
+    When starting minikube, there is actually a thoughtful reminder to enable the channel：<br>`After the addon is enabled, please run "minikube tunnel" and your ingress resources would be available at "127.0.0.1"`
