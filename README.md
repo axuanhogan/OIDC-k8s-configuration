@@ -40,7 +40,7 @@
     Take the following configuration as an example：`3G` Memory + `CPU` x 2
 
     ```shell
-    minikube start --memory 3096 --cpus 2
+    minikube start --driver=docker --memory 3096 --cpus 2
     ```
 
 2. Enable minikube ingress
