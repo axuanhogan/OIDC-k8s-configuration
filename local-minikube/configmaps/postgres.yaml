@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: sso
+  namespace: auth
   name: postgres
 data:
   POSTGRES_DB: keycloak

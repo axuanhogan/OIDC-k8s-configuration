@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: sso
+  namespace: auth
   name: keycloak
 spec:
   defaultBackend:
@@ -10,7 +10,7 @@ spec:
       port:
         number: 8080
   rules:
-    - host: sso.localhost
+    - host: auth.localhost
       http:
         paths:
           - path: /

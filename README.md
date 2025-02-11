@@ -35,7 +35,7 @@
     ```
 
     `--driver=docker`：Specify driver as docker to use local images.
-   
+
     If there are insufficient resources, you need to configure sufficient resources for your minikube cluster at startup.<br>
     Take the following configuration as an example：`3G` Memory + `CPU` x 2
 
@@ -75,13 +75,13 @@
 5. Configure the ingress address to your Local hosts（ `/private/etc/hosts` ）
 
     ```shell
-    xxx.xxx.xxx.xxx sso.localhost backend-api.localhost
+    xxx.xxx.xxx.xxx auth.localhost backend-api.localhost
     ```
 
     IP can be viewed from ingress.<br>Although the namespace is different, the IPs will basically be the same group.
 
     ```shell
-    kubectl get ingress -n sso
+    kubectl get ingress -n auth
     kubectl get ingress -n application
     ```
 
